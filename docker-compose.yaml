@@ -58,10 +58,10 @@ networks:
     name: app-net
     driver: bridge
     attachable: true
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16 
-          ip_range: 172.20.0.0/16 
+    #ipam:
+      #config:
+        #- subnet: 172.20.0.0/16 
+         # ip_range: 172.20.0.0/16 
 
 #Creates a Docker volume that persists all the data stored in the database
 volumes:

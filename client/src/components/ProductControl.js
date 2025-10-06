@@ -5,6 +5,7 @@ import NewProductForm from './NewProductForm';
 import ProductDetail from './ProductDetail';
 import AddProduct from './AddProduct';
 import EditProductForm from './EditProductForm';
+// The commented-out imports and data below are kept as they were in your original code
 // import tshirt from '../images/products/tshirt.png';
 // import backpack from '../images/products/backpack.png';
 // import pants from '../images/products/pants.png';
@@ -22,46 +23,7 @@ import EditProductForm from './EditProductForm';
 //         quantity: 40,
 //         id: "1"
 //     },
-//     {
-//         name: 'BackPack', 
-//         price: '1500',
-//         quantity: 20,
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at arcu rutrum dolor pellentesque interdum ac id nunc. Ut nunc nunc, mollis vel auctor at, convallis et dolor. Donec felis nisl, ultricies ac lorem mollis, tempus maximus dolor. Maecenas mollis felis nec vulputate faucibus. Curabitur eleifend, felis sit amet fermentum sodales, dolor tellus feugiat turpis, vel placerat justo est luctus dui. Etiam vitae vulputate neque. Etiam tristique interdum laoreet. Pellentesque tincidunt nisi eu eros porta efficitur. Pellentesque sit amet lacus ut libero aliquet pellentesque quis a urna. Duis rutrum odio id sapien aliquet, auctor mattis augue facilisis.',
-//         photo: backpack,
-//         id: "2"
-//     },
-//     {
-//         name: 'Pants', 
-//         price: '1000',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at arcu rutrum dolor pellentesque interdum ac id nunc. Ut nunc nunc, mollis vel auctor at, convallis et dolor. Donec felis nisl, ultricies ac lorem mollis, tempus maximus dolor. Maecenas mollis felis nec vulputate faucibus. Curabitur eleifend, felis sit amet fermentum sodales, dolor tellus feugiat turpis, vel placerat justo est luctus dui. Etiam vitae vulputate neque. Etiam tristique interdum laoreet. Pellentesque tincidunt nisi eu eros porta efficitur. Pellentesque sit amet lacus ut libero aliquet pellentesque quis a urna. Duis rutrum odio id sapien aliquet, auctor mattis augue facilisis.',
-//         quantity: 15,
-//         photo: pants,
-//         id: '3'
-//     },
-//     {
-//         name: 'Trekking Shoes',
-//         price: '2000',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at arcu rutrum dolor pellentesque interdum ac id nunc. Ut nunc nunc, mollis vel auctor at, convallis et dolor. Donec felis nisl, ultricies ac lorem mollis, tempus maximus dolor. Maecenas mollis felis nec vulputate faucibus. Curabitur eleifend, felis sit amet fermentum sodales, dolor tellus feugiat turpis, vel placerat justo est luctus dui. Etiam vitae vulputate neque. Etiam tristique interdum laoreet. Pellentesque tincidunt nisi eu eros porta efficitur. Pellentesque sit amet lacus ut libero aliquet pellentesque quis a urna. Duis rutrum odio id sapien aliquet, auctor mattis augue facilisis.',
-//         quantity: 10,
-//         photo: trekkingshoes,
-//         id: '4'
-//     },
-//     {
-//         name: 'Jacket',
-//         price: '1500',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at arcu rutrum dolor pellentesque interdum ac id nunc. Ut nunc nunc, mollis vel auctor at, convallis et dolor. Donec felis nisl, ultricies ac lorem mollis, tempus maximus dolor. Maecenas mollis felis nec vulputate faucibus. Curabitur eleifend, felis sit amet fermentum sodales, dolor tellus feugiat turpis, vel placerat justo est luctus dui. Etiam vitae vulputate neque. Etiam tristique interdum laoreet. Pellentesque tincidunt nisi eu eros porta efficitur. Pellentesque sit amet lacus ut libero aliquet pellentesque quis a urna. Duis rutrum odio id sapien aliquet, auctor mattis augue facilisis.',
-//         quantity: 5,
-//         photo: giacket,
-//         id: '5'
-//     },
-//     {
-//         name:'T-Shirt Ladies',
-//         price: '650',
-//         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque at arcu rutrum dolor pellentesque interdum ac id nunc. Ut nunc nunc, mollis vel auctor at, convallis et dolor. Donec felis nisl, ultricies ac lorem mollis, tempus maximus dolor. Maecenas mollis felis nec vulputate faucibus. Curabitur eleifend, felis sit amet fermentum sodales, dolor tellus feugiat turpis, vel placerat justo est luctus dui. Etiam vitae vulputate neque. Etiam tristique interdum laoreet. Pellentesque tincidunt nisi eu eros porta efficitur. Pellentesque sit amet lacus ut libero aliquet pellentesque quis a urna. Duis rutrum odio id sapien aliquet, auctor mattis augue facilisis.',
-//         quantity: 50,
-//         photo: tshirt_ladies,
-//         id: '6'
-//     }
+//     // ... other commented products
 // ]
 class ProductControl extends Component {
     
@@ -120,49 +82,24 @@ class ProductControl extends Component {
             }));
         }
     }
-    // handlePhotoUpload = (photo)=>{
-    //     console.log(photo.file)
-    //     this.setState({
-    //         uploadPhoto: file.file
-    //     })
-
-        
-    // }
 
     // Method to handle adding a new product
     handleAddingNewProduct = (newProduct) =>{
-        // if (newProduct.photo === undefined){
-        //     newProduct.photo = Default_image
-        // }
-        // console.log(newProduct.name)
-        // const newProductList = this.state.actualProductList.concat(newProduct)
-        // var formData = new FormData()
-
-        // formData.append('data',newProduct)
-        // for (let key of Object.keys(newProduct)){
-        //     formData.set(key, newProduct[key])
-        // }
-        // formData.append('myFile', this.state.uploadPhoto)
-
-        // console.log(formData)   
-        // var formData = new FormData();
-        // formData.append('myImage',newProduct);
-        // const config = {
-        //     headers: {
-        //         'content-type': 'multipart/form-data'
-        //     }
-        // };
-        // console.log(formData) 
-        // for (var pair of formData.entries()) {
-        //     console.log(pair[0]+ ', ' + pair[1]); 
-        // }       
-        // console.log(...formData)
         axios.post('http://localhost:5000/api/products', newProduct)
-            .then(res => console.log(res.data))
-        this.setState({
-            formVisibleOnPage: false
-        })
+            .then(res => {
+                // FIX: Update the product list with the new product (res.data) returned by the server
+                const newProductList = this.state.actualProductList.concat(res.data);
+
+                this.setState({
+                    actualProductList: newProductList, // <-- Corrected State Update
+                    formVisibleOnPage: false
+                });
+            })
+            .catch(error => {
+                console.error("Error adding new product:", error);
+            });
     };
+    
     handleDeletingProduct = (id) =>{
         axios.delete('http://localhost:5000/api/products/'+id)
             .then(res => console.log(res.data))
@@ -205,7 +142,7 @@ class ProductControl extends Component {
             currentlyVisibleState = < ProductDetail product = {this.state.selectedProduct} onBuyButtonClick ={this.handleAddButtonClick}  onDeleteProduct = {this.handleDeletingProduct} onEditProductClick = {this.handleEditProductClick}/>
             buttonText = "Back to product list"
         }else if (this.state.formVisibleOnPage){
-            currentlyVisibleState = < NewProductForm onNewProductCreation = {this.handleAddingNewProduct} onPhotoUpload={this.handlePhotoUpload} />
+            currentlyVisibleState = < NewProductForm onNewProductCreation = {this.handleAddingNewProduct} /* onPhotoUpload={this.handlePhotoUpload} */ />
             buttonText = "Back to product list"
         }else{
             currentlyVisibleState = < ProductList productList = {this.state.actualProductList} onProductSelection={this.handleChangingSelectedProduct}  />
@@ -226,4 +163,3 @@ class ProductControl extends Component {
 }
 
 export default ProductControl;
-
