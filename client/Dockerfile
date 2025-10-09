@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:14-slim AS build
+FROM node:18-slim AS build
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
-FROM alpine:3.16.7
+FROM node:18-slim
 
 WORKDIR /app
 
