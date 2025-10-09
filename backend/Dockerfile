@@ -18,8 +18,6 @@ FROM node:18-slim
 
 WORKDIR /app
 
-RUN apk update && apk add --update nodejs
-
 COPY --from=build /usr/src/app /app
 
 # Expose the port the app runs on

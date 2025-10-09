@@ -23,6 +23,8 @@ services:
       - brian-yolo-backend
     networks:
       - app-net
+    environment:
+        NODE_OPTIONS: --openssl-legacy-provider
 
   #Builds the backend Docker image and creates the backend microservice
   brian-yolo-backend:
