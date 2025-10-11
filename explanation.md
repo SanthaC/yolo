@@ -63,7 +63,7 @@ MONGODB_URI: mongodb://app-ip-mongo:27017/yolomy
 5. Git Workflow Used
 - The project development followed an iterative, descriptive Git workflow, maximizing clarity and traceability:
 
-- Key stages in the version control process included:
+- Key stages in the process included:
 
 (i) Initialization and Environment Setup:
 The workflow began by cloning the base repository, reviewing the existing structure and configuring the local development environment to ensure compatibility with Docker and Node.js components.
