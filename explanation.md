@@ -54,8 +54,8 @@ MONGODB_URI: mongodb://app-ip-mongo:27017/yolomy
 
  - volumes:
   - type: volume
-    source: app-mongo-data
-    target: /data/db
+  - source: app-mongo-data
+  - target: /data/db
 
 
  - This setup guarantees that any product data saved in MongoDB’s /data/db directory is securely retained on the Docker host system, ensuring data remains intact even after container shutdowns, deletions or restarts.
