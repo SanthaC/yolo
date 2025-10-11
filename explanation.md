@@ -10,6 +10,7 @@ The final functional state allows anyone to clone the repository and execute a s
 Assessment Objectives
 
 1. Choice of Base Image
+
 (i) Client(React Build) - node:18-slim - Used for the building stage. Utilizing the slim variant to minimize the overhead of the build environment ensuring efficiency and contributing to the goal of a reduced final image size.
 
 (ii) Backend(Node.js) - node:18-slim - This image is a stripped-down version of the official Node.js image, built on Debian but excluding unnecessary packages. It provides a stable and compatible environment while significantly reducing the final image size compared to the full Node image, satisfying the requirement for a minimalist base.
