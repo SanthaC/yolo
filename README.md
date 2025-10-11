@@ -2,7 +2,7 @@ FULL STACK E-COMMERCE PLATFORM
 
 1. Project Overview
 
-This project focused on containerizing a pre-existing application built with Node.js, React, and MongoDB. The final outcome is a fully operational e-commerce platform that enables users to browse, add, and maintain product data, even after containers are stopped or restarted.
+This project focused on containerizing a pre-existing application built with Node.js, React and MongoDB. The final outcome is a fully operational e-commerce platform that enables users to browse, add, and maintain product data, even after containers are stopped or restarted.
 The entire environment is launched via a single docker compose command, ensuring maximum portability and ease of deployment.
 
 2. Architecture and Microservices
@@ -57,7 +57,7 @@ You should see all three containers (client, backend and mongo) listed with a ST
 ![Docker containers running](./client/src/images/screenshots/successful-container-running.png)
 
 
-- Step 4.3-4: Access the Application
+- Step 4.4: Access the Application
 
 Once the containers are running, the e-commerce dashboard will be available at:
 
@@ -102,7 +102,7 @@ As a final project deliverable, the custom-built images for the client and backe
 
 ![Docker Hb repo](./client/src/images/screenshots/docker-repo.png)
 
-The screenshot below confirms the successful push and the use of the required Semantic Versioning (v1.0.0) tag, satisfying the Image Deployment and Image Versioning criteria.
+The screenshot above confirms the successful push and the use of the required Semantic Versioning (v1.0.0) tag, satisfying the Image Deployment and Image Versioning criteria.
 
 7. Technical Deep Dive
 
