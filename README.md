@@ -21,19 +21,19 @@ The application is broken down into three distinct microservices, all connected 
 YOLOMY/
 ├── .vscode/
 │   └── settings.json
-├── backend/                          #Backend(Node.js)
+├── backend/               #Backend(Node.js)
 │   ├── models/
 │   │   └── Products.js
 │   ├── node_modules/
-│   ├── routes/api/
+│   ├── routes/api/        # Defines API endpoints
 │   │   └── productRoute.js
 │   ├── .gitignore
 │   ├── Dockerfile
 │   ├── package-lock.json
 │   ├── package.json
-│   ├── server.js
-│   └── upload.js
-├── client/                           #Frontend(React)
+│   ├── server.js         # Backend entry point
+│   └── upload.js         # Login for handling file uploads
+├── client/               #Frontend(React)
 │   ├── public/
 │   │   ├── favicon.ico
 │   │   ├── index.html
@@ -42,7 +42,7 @@ YOLOMY/
 │   │   ├── manifest.json
 │   │   └── robots.txt
 │   └── src/
-│       ├── components/
+│       ├── components/   #Reusable UI components
 │       │   ├── AboutUs.js
 │       │   ├── AddProduct.js
 │       │   ├── App.js
@@ -57,6 +57,15 @@ YOLOMY/
 │       │   ├── ProductList.js
 │       │   ├── ReusableForm.js
 │       │   └── images/
+│       │       ├── backgrounds
+│       │       ├── logo
+│       │       ├── products
+│       │       ├── screenshots
+│       │       ├── social_icons
+│       │       ├── mouse_click.png
+│       │       └──product_image.jpeg
+│       │   
+│       │    
 │       ├── App.css
 │       ├── App.test.js
 │       ├── index.js
@@ -88,6 +97,7 @@ YOLOMY/
         ├── ansible.cfg
         ├── backend-deployment.yaml
         ├── docker-compose.yaml
+        ├── explanataion.md
         ├── frontend-deployment.yaml
         ├── hosts
         ├── image.png
