@@ -18,7 +18,7 @@ The application is broken down into three distinct microservices, all connected 
 ## 3. Repository Structure
 
 ```
-YOLOMY/
+YOLO/
 ├── .vscode/
 │   └── settings.json
 ├── backend/               #Backend(Node.js)
