@@ -1,15 +1,15 @@
-Technical Implementation Report: E-Commerce Platform Containerization
+# Technical Implementation Report: E-Commerce Platform Containerization
 
 The project goal was to successfully containerize a three-tier e-commerce application consisting of React client, an Node.js backed and MongoDB database, using Docker and Docker compose for orchestration and ensuring full data persistence.
 
-Implementation Summary (setup and task fullfillment)
+# Implementation Summary (setup and task fullfillment)
 
  The primary task involved converting the existing local development environment into a set of interoperable Docker microservices. This was achieved by creating optimized Dockerfiles for the client and backend components and an orchestration file (docker-compose.yaml) to manage networking, volumes and service startup order.
 The final functional state allows anyone to clone the repository and execute a single command (docker compose up -d) to launch a fully working, persistent e-commerce dashboard accessible on http://localhost:3000.
 
-Assessment Objectives
+# Assessment Objectives
 
-1. Choice of Base Image
+## 1. Choice of Base Image
 
 (i) Client(React Build) - node:18-slim - Used for the building stage. Utilizing the slim variant to minimize the overhead of the build environment ensuring efficiency and contributing to the goal of a reduced final image size.
 
@@ -20,7 +20,7 @@ Assessment Objectives
 - By utilizing the slim base image, the total size of the built images is significantly reduced, ensuring the project meets the Total Image size below 600MB criteria.
 
 
-2. Dockerfile Directives used
+## 2. Dockerfile Directives used
 
 (i) FROM: it tells Docker to start building this image using another existing image as the foundation.
 
@@ -35,7 +35,7 @@ Assessment Objectives
 (v) CMD: Defines the command that executes when the container starts (e.g., npm start for both client and backend), ensuring the service begins automatically.
 
 
-3. Docker-compose Networking
+## 3. Docker-compose Networking
 
 (i) Network Definition: A custom bridge network named app-net was defined at the root level of docker-compose.yaml.
 
@@ -47,21 +47,23 @@ MONGODB_URI: mongodb://app-ip-mongo:27017/yolomy
 (iv)Application Port Allocation: The client container is the only service explicitly mapped to the host machine for external access, using the required port allocation: ports: ["3000:3000"].
 
 
-4. Docker-compose Volume Definition and Usage
+## 4. Docker-compose Volume Definition and Usage
 
 (i) Volume Definition: A named volume, app-mongo-data, was defined under the volumes section of the docker-compose.yaml.
 
 (ii) Volume Mounting: app-mongo-data was mounted to the standard MongoDB data directory (/data/db) within the app-ip-mongo container:
 
- - volumes:
-  - type: volume
-  - source: app-mongo-data
-  - target: /data/db
+```bash
+   volumes:
+    type: volume
+    source: app-mongo-data
+    target: /data/db
+  ```
 
 
  - This setup guarantees that any product data saved in MongoDB’s /data/db directory is securely retained on the Docker host system, ensuring data remains intact even after container shutdowns, deletions or restarts.
 
-5. Git Workflow Used
+## 5. Git Workflow Used
 - The project development followed an iterative, descriptive Git workflow, maximizing clarity and traceability:
 
 - Key stages in the process included:
@@ -85,7 +87,7 @@ The final commits consolidated all changes, verified container functionality and
 
 - This structured workflow maintained an organized and transparent commit record, showcasing consistent use of Git best practices while allowing straightforward tracking and assessment of the project’s progress from initialization to final deployment.
 
-6. Successful running and debugging measures
+## 6. Successful running and debugging measures
 
  (i) Intial BUild/runtime issues - confirmed node:18-slim usage, ensuring basic package compatibility  resulting to the images being built successfully.
 
@@ -97,7 +99,7 @@ The final commits consolidated all changes, verified container functionality and
 
   - The final  application is successfully running, with all three microservices orchestrated via Docker Compose and maintaining persistent data.
 
-  7. Good Practises and Versioning
+## 7. Good Practises and Versioning
 
 (i) Versioning: Uses version: "3.8" for compatibility with modern Docker features and stable networking.
 
