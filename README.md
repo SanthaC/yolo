@@ -21,7 +21,7 @@ The application is broken down into three distinct microservices, all connected 
 YOLOMY/
 ├── .vscode/
 │   └── settings.json
-├── backend/
+├── backend/                          #Backend(Node.js)
 │   ├── models/
 │   │   └── Products.js
 │   ├── node_modules/
@@ -33,7 +33,7 @@ YOLOMY/
 │   ├── package.json
 │   ├── server.js
 │   └── upload.js
-├── client/
+├── client/                           #Frontend(React)
 │   ├── public/
 │   │   ├── favicon.ico
 │   │   ├── index.html
@@ -46,11 +46,11 @@ YOLOMY/
 │       │   ├── AboutUs.js
 │       │   ├── AddProduct.js
 │       │   ├── App.js
-│       │   ├── EditProductFor... (incomplete filename)
+│       │   ├── EditProductForm.js
 │       │   ├── Footer.js
 │       │   ├── Header.js
 │       │   ├── Navbar.js
-│       │   ├── NewProductFor... (incomplete filename)
+│       │   ├── NewProductForm.js
 │       │   ├── Product.js
 │       │   ├── ProductControl.js
 │       │   ├── ProductDetail.js
@@ -86,9 +86,9 @@ YOLOMY/
         ├── .dockerignore
         ├── .gitignore
         ├── ansible.cfg
-        ├── backend-deploymen... (incomplete filename)
+        ├── backend-deployment.yaml
         ├── docker-compose.yaml
-        ├── frontend-deploymen... (incomplete filename)
+        ├── frontend-deployment.yaml
         ├── hosts
         ├── image.png
         ├── inventory.yml
