@@ -15,7 +15,91 @@ The application is broken down into three distinct microservices, all connected 
 
 (iii) app-ip-mongo - MongoDB - Data Storage - Internal Port 27017
 
-## 3. Requirement 
+## 3. Repository Structure
+
+```
+YOLOMY/
+├── .vscode/
+│   └── settings.json
+├── backend/
+│   ├── models/
+│   │   └── Products.js
+│   ├── node_modules/
+│   ├── routes/api/
+│   │   └── productRoute.js
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+│   └── upload.js
+├── client/
+│   ├── public/
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   └── src/
+│       ├── components/
+│       │   ├── AboutUs.js
+│       │   ├── AddProduct.js
+│       │   ├── App.js
+│       │   ├── EditProductFor... (incomplete filename)
+│       │   ├── Footer.js
+│       │   ├── Header.js
+│       │   ├── Navbar.js
+│       │   ├── NewProductFor... (incomplete filename)
+│       │   ├── Product.js
+│       │   ├── ProductControl.js
+│       │   ├── ProductDetail.js
+│       │   ├── ProductList.js
+│       │   ├── ReusableForm.js
+│       │   └── images/
+│       ├── App.css
+│       ├── App.test.js
+│       ├── index.js
+│       ├── product-detail.css
+│       ├── serviceWorker.js
+│       └── setupTests.js
+├── .gitignore
+├── Dockerfile
+├── package-lock.json
+├── README.md
+└── roles/
+    ├── backend-deployment/
+    │   ├── tasks/
+    │   │   └── main.yml
+    │   └── vars/
+    │       └── main.yml
+    ├── frontend-deployment/
+    │   ├── tasks/
+    │   │   └── main.yml
+    │   └── vars/
+    │       └── main.yml
+    ├── setup-mongodb/
+    │   └── tasks/
+    │       └── main.yml
+    └── vars/
+        ├── main.yml
+        ├── .dockerignore
+        ├── .gitignore
+        ├── ansible.cfg
+        ├── backend-deploymen... (incomplete filename)
+        ├── docker-compose.yaml
+        ├── frontend-deploymen... (incomplete filename)
+        ├── hosts
+        ├── image.png
+        ├── inventory.yml
+        ├── playbook.yml
+        ├── README.md
+        ├── Structure
+        └── Vagrantfile
+```
+---
+
+## 4. Requirement 
 
 - To successfully build and run this application, you must have the following software installed on your host machine:
 
@@ -25,11 +109,11 @@ The application is broken down into three distinct microservices, all connected 
 ```
 - Git: For cloning the repository.
 
-## 4. Deployment and Launch
+## 5. Deployment and Launch
 
 Follow these steps to clone the repository, build the images and launch the entire application stack:
 
-### Step 4.1: Clone the Repository
+### Step 5.1: Clone the Repository
 
 Navigate to your preferred directory and clone the project:
 
@@ -38,7 +122,7 @@ Navigate to your preferred directory and clone the project:
  git clone https://github.com/SanthaC/yolo
 - cd yolo 
 ```
-### Step 4.2: Build and Run Containers (Using Docker Compose)
+### Step 5.2: Build and Run Containers (Using Docker Compose)
 
 The docker-compose.yaml file defines the build instructions, service dependencies, networking and volume setup.
 
@@ -48,7 +132,7 @@ docker compose up --build -d
 ```
 Allow 1-2 minutes for the initial images to build and the MongoDB service to initialize.
 
-### Step 4.3: Verify Container Status
+### Step 5.3: Verify Container Status
 
 After running the command above, use docker ps to confirm that all three microservices are up and running:
 ```bash
@@ -59,7 +143,7 @@ You should see all three containers (client, backend and mongo) listed with a ST
 ![Docker containers running](./client/src/images/screenshots/successful-container-running.png)
 
 
-### Step 4.4: Access the Application
+### Step 5.4: Access the Application
 
 Once the containers are running, the e-commerce dashboard will be available at:
 
@@ -68,11 +152,11 @@ http://localhost:3000
 
 
 
-## 5. Functionality and Persistence Test (The Core Deliverable)
+## 6. Functionality and Persistence Test (The Core Deliverable)
 
 The successful launch of the application confirms Service Orchestration. Use the following steps to confirm data persistence, a critical objective of this project:
 
-### Test 5.1: Add a Product
+### Test 6.1: Add a Product
 Access the dashboard at http://localhost:3000.
 
 Use the "Add Product" form.
@@ -81,7 +165,7 @@ Crucially, ensure the "Price" field contains a valid number (e.g. 10.50), as non
 
 Add the product. It should immediately appear in the list.
 
-### Test 5.2: Confirm Persistence
+### Test 6.2: Confirm Persistence
 
 Stop the entire application stack (this simulates a system shutdown):
 ```bash
@@ -100,7 +184,7 @@ docker compose up -d
 Verify Data: Refresh the browser at http://localhost:3000. The product added in Step 5.1 must still be visible. If it is present, data persistence is confirmed via the custom Docker Volume setup.
 ![Successful Product added](./client/src/images/screenshots/persistent-web-data.png)
 
-## 6. Docker Image Deployment Status
+## 7. Docker Image Deployment Status
 
 As a final project deliverable, the custom-built images for the client and backend services have been successfully pushed to the public DockerHub registry, ensuring they are versioned and universally available for deployment.
 
