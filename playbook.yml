@@ -1,4 +1,12 @@
----
+- name: Ensure Docker network app-net exists
+  hosts: all
+  become: true
+  tasks:
+    - name: Create Docker network
+      docker_network:
+        name: app-net
+        state: present
+
 - name: Ansible playbook to dockerize and run yolo e-commerce app using ansible
   hosts: all
   become: true
@@ -6,4 +14,3 @@
     - frontend-deployment
     - setup-mongodb   
     - backend-deployment
-    

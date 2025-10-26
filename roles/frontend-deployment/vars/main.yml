@@ -1,0 +1,4 @@
+---
+container_name: brian-yolo-client
+network: app-net
+volume: app-mongo-data/app
