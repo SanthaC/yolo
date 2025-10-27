@@ -230,7 +230,7 @@ docker compose up -d
 
 ![Terminal Image](./client/src/images/screenshots/terminal-image.png)
 
-Verify Data: Refresh the browser at http://localhost:3000. The product added in Step 5.1 must still be visible. If it is present, data persistence is confirmed via the custom Docker Volume setup.
+Verify Data: Refresh the browser at http://localhost:3000. The product added must still be visible. If it is present, data persistence is confirmed via the custom Docker Volume setup.
 ![Successful Product added](./client/src/images/screenshots/persistent-web-data.png)
 
 
