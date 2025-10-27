@@ -3,6 +3,15 @@ app-mongo-data/
 vars.yml
 vault.yml
 .vagrant/
+.vagrant.d/
+*.pem
+*.key
+terraform.tfstate
+terraform.tfstate.backup
+*.log
+.env
+node_modules/
+dist/
 .vscode/
 .vscode
 .vscode/*
