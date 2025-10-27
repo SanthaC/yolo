@@ -1,209 +1,94 @@
-# FULL STACK E-COMMERCE PLATFORM 
+# Configuration Management Independent Project (IP)
 
-## 1. Project Overview
+This repository contains the solution for the Configuration Management Independent Project, focusing on **Ansible** for configuration management and application deployment, with an optional but implemented **Terraform** component for infrastructure provisioning.
 
-This project focused on containerizing a pre-existing application built with Node.js, React and MongoDB. The final outcome is a fully operational e-commerce platform that enables users to browse, add, and maintain product data, even after containers are stopped or restarted.
-The entire environment is launched via a single docker compose command, ensuring maximum portability and ease of deployment.
+The project deploys a containerized e-commerce web application, leveraging a **Vagrant**-provisioned server for a local development/testing environment.
 
-## 2. Architecture and Microservices
-
-The application is broken down into three distinct microservices, all connected via a dedicated Docker bridge network (app-net):
-
-(i) brain-yolo-client - React, Node.js - Frontend Dashboard - Host Port 3000
-
-(ii) brian-yolo-backend - Node.js - REST API Server - Internal Port 5000
-
-(iii) app-ip-mongo - MongoDB - Data Storage - Internal Port 27017
-
-## 3. Repository Structure
-
-```
-YOLO/
-├── .vscode/
-│   └── settings.json
-├── backend/               #Backend(Node.js)
-│   ├── models/
-│   │   └── Products.js
-│   ├── node_modules/
-│   ├── routes/api/        # Defines API endpoints
-│   │   └── productRoute.js
-│   ├── .gitignore
-│   ├── Dockerfile
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── server.js         # Backend entry point
-│   └── upload.js         # Login for handling file uploads
-├── client/               #Frontend(React)
-│   ├── public/
-│   │   ├── favicon.ico
-│   │   ├── index.html
-│   │   ├── logo192.png
-│   │   ├── logo512.png
-│   │   ├── manifest.json
-│   │   └── robots.txt
-│   └── src/
-│       ├── components/   #Reusable UI components
-│       │   ├── AboutUs.js
-│       │   ├── AddProduct.js
-│       │   ├── App.js
-│       │   ├── EditProductForm.js
-│       │   ├── Footer.js
-│       │   ├── Header.js
-│       │   ├── Navbar.js
-│       │   ├── NewProductForm.js
-│       │   ├── Product.js
-│       │   ├── ProductControl.js
-│       │   ├── ProductDetail.js
-│       │   ├── ProductList.js
-│       │   ├── ReusableForm.js
-│       │   └── images/
-│       │       ├── backgrounds
-│       │       ├── logo
-│       │       ├── products
-│       │       ├── screenshots
-│       │       ├── social_icons
-│       │       ├── mouse_click.png
-│       │       └──product_image.jpeg
-│       │   
-│       │    
-│       ├── App.css
-│       ├── App.test.js
-│       ├── index.js
-│       ├── product-detail.css
-│       ├── serviceWorker.js
-│       └── setupTests.js
-├── .gitignore
-├── Dockerfile
-├── package-lock.json
-├── README.md
-└── roles/
-    ├── backend-deployment/
-    │   ├── tasks/
-    │   │   └── main.yml
-    │   └── vars/
-    │       └── main.yml
-    ├── frontend-deployment/
-    │   ├── tasks/
-    │   │   └── main.yml
-    │   └── vars/
-    │       └── main.yml
-    ├── setup-mongodb/
-    │   └── tasks/
-    │       └── main.yml
-    └── vars/
-        ├── main.yml
-        ├── .dockerignore
-        ├── .gitignore
-        ├── ansible.cfg
-        ├── backend-deployment.yaml
-        ├── docker-compose.yaml
-        ├── explanataion.md
-        ├── frontend-deployment.yaml
-        ├── hosts
-        ├── image.png
-        ├── inventory.yml
-        ├── playbook.yml
-        ├── README.md
-        ├── Structure
-        └── Vagrantfile
-```
 ---
 
-## 4. Requirement 
+## 🚀 Project Overview
 
-- To successfully build and run this application, you must have the following software installed on your host machine:
+The goal of this assignment was to automate the deployment of a multi-component e-commerce application using configuration management tools. The application consists of a **Web (Frontend(Client))**, **API (Backend)** and a **Databasedb)(Mongo** component, all running as Docker containers.
 
-- Docker Engine: For building and running containers.
+The project is structured into two main stages:
+
+### Stage 1: Ansible Instrumentation
+Automates the provisioning of a Vagrant VM and the complete setup, configuration and deployment of the containerized application using only an **Ansible Playbook**.
+
+### Stage 2: Ansible and Terraform Instrumentation
+Introduces **Terraform** for infrastructure provisioning. A main Ansible playbook triggers a Terraform module to provision the Vagrant server and then continues with Ansible roles for server configuration and application deployment, offering a single command to deploy the full stack.
+
+---
+
+## 📂 Repository Structure
+
+The repository is organized to clearly delineate the two stages of the project and adhere to Ansible and Terraform best practices, including the use of roles, variables, and proper file separation.
+
+---
+
+## ⚙️ Deployment Instructions
+
+Follow these steps to deploy the application for both stages.
+
+### Prerequisites
+
+You need the following tools installed on your local machine:
+
+1.  **Vagrant**
+2.  **VirtualBox** 
+3.  **Ansible** (required for Stage 1 & 2)
+4.  **Terraform** (required for Stage 2)
+5.  **Git**
+---
+### Stage 1: Ansible-Only Deployment
+
+#### Step 1: Create and Test the Vagrant Environment
+
+This stage uses the `Vagrantfile` to provision the VM and then runs the `playbook.yml` to configure the server and deploy the application.
+
+1.Bring up the virtual machine:
+
 ```bash
-- Install Docker Engine
-```
-- Git: For cloning the repository.
+vagrant up
+`````
+![Vagrant-up Screenshoot](./client/src/images/screenshots/vagrant-up.png)
 
-## 5. Deployment and Launch
+2.SSH into it to test:
 
-Follow these steps to clone the repository, build the images and launch the entire application stack:
+````bash
+vagrant ssh
+``````
+![Vagrant-ssh Screenshoot](./client/src/images/screenshots/vagrant-ssh.png)
+3. Check if ansible can reach it on host:
+`````bash
+ansible all -i inventory.yml -m ping
 
-### Step 5.1: Clone the Repository
+`````
+###S tep 2: Run your Ansible Playbook
 
-Navigate to your preferred directory and clone the project:
-
-1. Clone the repo
+From the host machine, in your project root:
 ```bash
- git clone https://github.com/SanthaC/yolo
-- cd yolo 
-```
-### Step 5.2: Build and Run Containers (Using Docker Compose)
+ansible-playbook -i inventory.yml playbook.yml
+``````
 
-The docker-compose.yaml file defines the build instructions, service dependencies, networking and volume setup.
+✅ If you get a “pong” response, your setup is correct.
 
-Execute the following command from the project root directory. The -d flag runs the containers in detached mode:
-```bash
-docker compose up --build -d
-```
-Allow 1-2 minutes for the initial images to build and the MongoDB service to initialize.
+#### Step 2: Run Your Ansible Playbook
 
-### Step 5.3: Verify Container Status
+From the host machine, in your project root:
+````bash
+ansible-playbook -i inventory.yml playbook.yml
+````
 
-After running the command above, use docker ps to confirm that all three microservices are up and running:
-```bash
-docker ps
-```
-You should see all three containers (client, backend and mongo) listed with a STATUS of Up.
+This should:
 
-![Docker containers running](./client/src/images/screenshots/successful-container-running.png)
+Clone your GitHub code inside the VM.
 
+Build Docker images (for backend, frontend(client), MongoDB).
 
-### Step 5.4: Access the Application
+Run containers via docker-compose.yaml.
 
-Once the containers are running, the e-commerce dashboard will be available at:
+Launch your e-commerce site on localhost:port.
 
-http://localhost:3000
-![Web Application Screenshot](./client/src/images/screenshots/web-application.png)
+Test in your browser ( http://localhost:3000)
 
-
-
-## 6. Functionality and Persistence Test (The Core Deliverable)
-
-The successful launch of the application confirms Service Orchestration. Use the following steps to confirm data persistence, a critical objective of this project:
-
-### Test 6.1: Add a Product
-Access the dashboard at http://localhost:3000.
-
-Use the "Add Product" form.
-
-Crucially, ensure the "Price" field contains a valid number (e.g. 10.50), as non-numeric input will fail backend validation.
-
-Add the product. It should immediately appear in the list.
-
-### Test 6.2: Confirm Persistence
-
-Stop the entire application stack (this simulates a system shutdown):
-```bash
-docker compose down
-```
-
-This command shuts down the containers but preserves the persistent named volume, app-mongo-data.
-
-Restart the application:
-```bash
-docker compose up -d
-```
-
-![Terminal Image](./client/src/images/screenshots/terminal-image.png)
-
-Verify Data: Refresh the browser at http://localhost:3000. The product added in Step 5.1 must still be visible. If it is present, data persistence is confirmed via the custom Docker Volume setup.
-![Successful Product added](./client/src/images/screenshots/persistent-web-data.png)
-
-## 7. Docker Image Deployment Status
-
-As a final project deliverable, the custom-built images for the client and backend services have been successfully pushed to the public DockerHub registry, ensuring they are versioned and universally available for deployment.
-
-![Docker Hb repo](./client/src/images/screenshots/docker-repo.png)
-
-The screenshot above confirms the successful push and the use of the required Semantic Versioning (v1.0.0) tag, satisfying the Image Deployment and Image Versioning criteria.
-
-## 7. Technical Deep Dive
-
-For an in-depth explanation of image choices, network setup using a custom bridge, persistent volume configuration and the troubleshooting process for resolving environment-related issues, please consult the project documentation:
-
-explanation.md (located in the repository root).
