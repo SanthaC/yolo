@@ -1,11 +1,6 @@
 # Simple local orchestration: bring up Vagrant VM and then run Ansible playbook
 terraform {
-  required_providers { }
-}
-
-variable "project_root" {
-  description = "Relative path to repo root from this terraform directory"
-  default     = ".."
+  required_providers {}
 }
 
 resource "null_resource" "vagrant_and_ansible" {
