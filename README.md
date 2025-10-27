@@ -59,26 +59,22 @@ vagrant up
 vagrant ssh
 ``````
 ![Vagrant-ssh Screenshoot](./client/src/images/screenshots/vagrant-ssh.png)
+
 3. Check if ansible can reach it on host:
 `````bash
 ansible all -i inventory.yml -m ping
-
 `````
-###S tep 2: Run your Ansible Playbook
+✅ If you get a “pong” response, your setup is correct.
+
+![ping Screenshoot](./client/src/images/screenshots/ping-response.png)
+
+### Step 2: Run your Ansible Playbook
 
 From the host machine, in your project root:
 ```bash
 ansible-playbook -i inventory.yml playbook.yml
 ``````
-
-✅ If you get a “pong” response, your setup is correct.
-
-#### Step 2: Run Your Ansible Playbook
-
-From the host machine, in your project root:
-````bash
-ansible-playbook -i inventory.yml playbook.yml
-````
+![Playbook Screenshoot](./client/src/images/screenshots/playbook.png)
 
 This should:
 
@@ -91,4 +87,6 @@ Run containers via docker-compose.yaml.
 Launch your e-commerce site on localhost:port.
 
 Test in your browser ( http://localhost:3000)
+
+![Frontend Output](./client/src/images/screenshots/web-application.png)
 
