@@ -170,6 +170,7 @@ vagrant ssh
 ![Vagrant-ssh Screenshoot](./client/src/images/screenshots/vagrant-ssh.png)
 
 3. Check if ansible can reach it on host:
+
 `````bash
 ansible all -i inventory.yml -m ping
 `````
@@ -199,13 +200,118 @@ Test in your browser ( http://localhost:3000)
 
 ![Frontend Output](./client/src/images/screenshots/web-application.png)
 
-### Stage 2: Ansible + Terraform (Local Provisioning)
+
+
+### Stage 2: Ansible + Terraform Integration - YOLO E-Commerce App
 
 #### Overview
 
-This stage extends Stage 1 by introducing Infrastructure as Code (IaC) using Terraform and Configuration Management using Ansible.
-Instead of manually creating an AWS instance (due to account activation issues), this setup uses Vagrant and Terraform’s local provider to provision a local Ubuntu server environment and then configures it automatically using Ansible.
+This stage builds upon Stage 1 by integrating Terraform and Ansible to automate the complete provisioning and configuration of the YOLO e-commerce web application.
 
-![AWS account activation issue](./client/src/images/screenshots/AWS.png)
+The goal is to use Terraform for infrastructure provisioning and Ansible for server configuration and Dockerized application deployment — all triggered with a single command.
+
+
 #### Repo structure
+```
+└── Stage_two
+    ├── ansible
+    │   ├── inventory.ini
+    │   ├── playbook.yaml
+    │   └── roles
+    │       ├── backend-deployment
+    │       │   ├── tasks
+    │       │   │   └── main.yml
+    │       │   └── vars
+    │       │       └── main.yml
+    │       ├── frontend-deployment
+    │       │   ├── tasks
+    │       │   │   └── main.yml
+    │       │   └── vars
+    │       │       └── main.yml
+    │       └── setup-mongodb
+    └── terraform
+        ├── main.tf
+        ├── output.tf
+        ├── provider.tf
+        └── variables.tf
 
+```
+---
+####⚙️ Key Components
+
+🪴 Terraform
+
+Provisions a virtual environment (e.g., Vagrant VM or EC2 instance).
+
+Uses variables for configuration management (region, instance type)
+
+Outputs the instance IP to be used by Ansible.
+
+🤖 Ansible
+
+Invokes Terraform automatically using the community.general.terraform module.
+
+Installs Docker and creates a shared network app-net.
+
+Deploys three containers:
+
+MongoDB → for data persistence
+
+Backend → API service
+
+Frontend → user interface
+
+####🔧 How to Run
+
+1. Navigate to Stage 2 directory
+`````
+cd stage_two
+`````
+
+2. Initialize Terraform
+`````bash
+terraform init
+`````
+
+3. Run Ansible Playbook
+`````bash
+ansible-playbook -i inventory/hosts.ini playbook.yml
+`````
+
+This will:
+
+Provision the infrastructure via Terraform
+
+Configure the server
+
+Launch the Dockerized YOLO app automatically
+
+Access the App
+
+http://localhost:3000
+
+###🧩 Roles Summary
+
+Role	Description
+
+setup-mongodb	Pulls and runs MongoDB container, ensuring data persistence.
+backend-deployment	Builds or pulls backend API container and connects to MongoDB.
+frontend-deployment	Builds or pulls frontend container and connects to backend.
+
+###🛡️ Good Practices Implemented
+
+Use of variables for reusability and clarity.
+
+Proper role separation for maintainability.
+
+Tags and blocks used for structured execution.
+
+Terraform–Ansible automation ensures one-step deployment.
+
+### ✅ Expected Outcome
+
+Terraform provisions the server environment.
+
+Ansible configures the environment and runs Docker containers.
+
+The YOLO e-commerce application runs successfully and persists product data.
