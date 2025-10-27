@@ -24,6 +24,124 @@ Introduces **Terraform** for infrastructure provisioning. A main Ansible playboo
 
 The repository is organized to clearly delineate the two stages of the project and adhere to Ansible and Terraform best practices, including the use of roles, variables, and proper file separation.
 
+.
+├── ansible.cfg
+├── backend
+│   ├── Dockerfile
+│   ├── models
+│   │   └── Products.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── routes
+│   │   └── api
+│   │       └── productRoute.js
+│   ├── server.js
+│   └── upload.js
+├── backend-deployment.yaml
+├── client
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   ├── README.md
+│   └── src
+│       ├── App.css
+│       ├── App.test.js
+│       ├── components
+│       │   ├── AboutUs.js
+│       │   ├── AddProduct.js
+│       │   ├── App.js
+│       │   ├── EditProductForm.js
+│       │   ├── Footer.js
+│       │   ├── Header.js
+│       │   ├── Navbar.js
+│       │   ├── NewProductForm.js
+│       │   ├── ProductControl.js
+│       │   ├── ProductDetail.js
+│       │   ├── Product.js
+│       │   ├── ProductList.js
+│       │   └── ReusableForm.js
+│       ├── images
+│       │   ├── backgrounds
+│       │   │   ├── about.jpg
+│       │   │   └── hero.jpg
+│       │   ├── logo
+│       │   │   ├── logo.png
+│       │   │   └── shop.png
+│       │   ├── mouse_click.png
+│       │   ├── product_image.jpeg
+│       │   ├── products
+│       │   │   ├── backpack.png
+│       │   │   ├── giacket.png
+│       │   │   ├── pants.png
+│       │   │   ├── trekkingshoes.png
+│       │   │   ├── tshirt_ladies.png
+│       │   │   └── tshirt.png
+│       │   ├── screenshots
+│       │   │   ├── docker-repo.png
+│       │   │   ├── persistent-web-data.png
+│       │   │   ├── ping-response.png
+│       │   │   ├── playbook.png
+│       │   │   ├── successful-container-running.png
+│       │   │   ├── successful-docker-login.png
+│       │   │   ├── terminal-image.png
+│       │   │   ├── vagrant-ssh.png
+│       │   │   ├── vagrant-up.png
+│       │   │   └── web-application.png
+│       │   └── social_icons
+│       │       ├── facebook.png
+│       │       ├── flickr.png
+│       │       ├── g_plus.png
+│       │       ├── pinterest.png
+│       │       ├── skype.png
+│       │       ├── stumble_upon.png
+│       │       ├── twitter_bird.png
+│       │       ├── twitter.png
+│       │       └── you_tube.png
+│       ├── index.js
+│       ├── product-detail.css
+│       ├── serviceWorker.js
+│       └── setupTests.js
+├── docker-compose.yaml
+├── explanation.md
+├── frontend-deployment.yaml
+├── hosts
+├── image.png
+├── inventory.yml
+├── playbook.yml
+├── README.md
+├── roles
+│   ├── backend-deployment
+│   │   ├── tasks
+│   │   │   └── main.yml
+│   │   └── vars
+│   │       └── main.yml
+│   ├── frontend-deployment
+│   │   ├── tasks
+│   │   │   └── main.yml
+│   │   └── vars
+│   │       └── main.yml
+│   └── setup-mongodb
+│       ├── tasks
+│       │   └── main.yml
+│       └── vars
+│           └── main.yml
+├── Stage_two
+│   ├── ansible.cfg
+│   ├── inventory.yml
+│   ├── playbook.yml
+│   └── terraform
+│       ├── terraform.tfstate
+│       └── terraform.tfstate.backup
+├── Structure
+└── Vagrantfile
+
 ---
 
 ## ⚙️ Deployment Instructions
