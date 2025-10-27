@@ -99,6 +99,29 @@ The goal is to use Terraform for infrastructure provisioning and Ansible for ser
 
 #### Folder Structure
 
+`````bash
+└── Stage_two
+    ├── ansible
+    │   ├── inventory.ini
+    │   ├── playbook.yaml
+    │   └── roles
+    │       ├── backend-deployment
+    │       │   ├── tasks
+    │       │   │   └── main.yml
+    │       │   └── vars
+    │       │       └── main.yml
+    │       ├── frontend-deployment
+    │       │   ├── tasks
+    │       │   │   └── main.yml
+    │       │   └── vars
+    │       │       └── main.yml
+    │       └── setup-mongodb
+    └── terraform
+        ├── main.tf
+        ├── output.tf
+        ├── provider.tf
+        └── variables.tf
+`````
 ⚙️ Key Components
 
 1. Terraform
