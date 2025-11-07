@@ -1,9 +1,8 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment # Changed from StatefulSet
 metadata:
-  name: backend
+  name: brian-yolo-backend-deployment
 spec:
-  serviceName: "backend"
   replicas: 1
   selector:
     matchLabels:
@@ -19,27 +18,16 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - name: MONGO_URI
+            # CRITICAL: Using MONGODB_URI to match docker-compose.yaml
+            # The value uses the correct K8s service name for MongoDB: 'app-ip-mongo'
+            - name: MONGODB_URI 
               value: mongodb://app-ip-mongo:27017/yolomy
-          # NOTE: The volumeMounts below are only needed if your backend itself
-          # needs persistent storage, NOT for MongoDB (which should be separate).
-          # I've kept them for now, but you may want to remove these if not needed.
-          volumeMounts:
-            - name: mongo-storage
-              mountPath: /data/db
-  volumeClaimTemplates:
-  - metadata:
-      name: mongo-storage
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  # CRITICAL: Service name matches the 'brian-yolo-backend' service name in docker-compose.yaml
+  name: brian-yolo-backend
 spec:
   selector:
     app: backend
