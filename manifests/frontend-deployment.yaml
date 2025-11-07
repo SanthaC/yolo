@@ -19,7 +19,6 @@ spec:
             - containerPort: 3000
           env:
             - name: NODE_OPTIONS
-              value: --openssl-legacy-provider
             # NOTE: If your frontend needs to know the backend URL, 
             # you'll need an environment variable here pointing to the Service name.
             # Example: REACT_APP_BACKEND_URL: http://brian-yolo-backend:5000
@@ -35,4 +34,4 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-  type: NodePort 
+  type: LoadBalancer
