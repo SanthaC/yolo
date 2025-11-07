@@ -1,14 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet 
+metadata:
+  name: app-mongo-statefulset
+spec:
+  # Matches the Service name above
+  serviceName: "app-ip-mongo" 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            # Mounts the persistent volume to MongoDB's default data directory
+            - name: mongo-persistent-storage
+              mountPath: /data/db 
+  # Defines the persistent storage volume for the data
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi # Adjust size as needed
 ---
-- name: Run MongoDB Container
-  docker_container:
-    name: app-mongo
-    image: mongo
-    ports:
-      - '27017:27017'
-    volumes:
-      - ./app-mongo-data:/data/db
-    networks:
-      - name: app-net
-  tags:
-    - database
-    - backend
+apiVersion: v1
+kind: Service
+metadata:
+  # CRITICAL: Name MUST match the hostname in the Backend's MONGODB_URI
+  name: app-ip-mongo 
+spec:
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: ClusterIP
