@@ -211,9 +211,10 @@ Add the product. It should immediately appear in the list.
 ### Step 8.2: Validate Persistence
 Delete the MongoDB pod:
 ```bash
-kubectl delete pod <mongo-pod-name>
+kubectl delete pod app-mongo-statefulset-0   
 
 ```
+![Pod Restart](./client/src/images/screenshots/k-persistence.png)
 Kubernetes recreates the Pod automatically, but data remains intact (thanks to PersistentVolume + StatefulSet).
 ![Successful Product added](./client/src/images/screenshots/persistent-web-data.png)
 
