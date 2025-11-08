@@ -1,93 +1,60 @@
-# Technical Implementation Report: E-Commerce Platform Containerization
+# Project: Full-Stack E-Commerce Platform — Kubernetes Orchestration Explanation
 
-The project goal was to successfully containerize a three-tier e-commerce application consisting of React client, an Node.js backed and MongoDB database, using Docker and Docker compose for orchestration and ensuring full data persistence.
-
-# Implementation Summary (setup and task fullfillment)
-
- The primary task involved converting the existing local development environment into a set of interoperable Docker microservices. This was achieved by creating optimized Dockerfiles for the client and backend components and an orchestration file (docker-compose.yaml) to manage networking, volumes and service startup order.
-The final functional state allows anyone to clone the repository and execute a single command (docker compose up -d) to launch a fully working, persistent e-commerce dashboard accessible on http://localhost:3000.
+This document explains the design reasoning and implementation choices made when moving the YOLO e-commerce platform from a Docker Compose local setup to a Kubernetes-orchestrated deployment (target platform: Google Kubernetes Engine — GKE). It addresses the assessment objectives required for Week 8 IP4: choice of Kubernetes objects, exposure method, persistent storage, git workflow, runtime/debugging evidence and good practices (versioning/tagging).
 
 # Assessment Objectives
 
-## 1. Choice of Base Image
-
-(i) Client(React Build) - node:18-slim - Used for the building stage. Utilizing the slim variant to minimize the overhead of the build environment ensuring efficiency and contributing to the goal of a reduced final image size.
-
-(ii) Backend(Node.js) - node:18-slim - This image is a stripped-down version of the official Node.js image, built on Debian but excluding unnecessary packages. It provides a stable and compatible environment while significantly reducing the final image size compared to the full Node image, satisfying the requirement for a minimalist base.
-
-(iii) Database(MongoDB) - mongo - The official MongoDB image is highly optimized for container deployment. We rely on Docker Compose's volume definition to handle data persistence, maintaining the official image's integrity.
-
-- By utilizing the slim base image, the total size of the built images is significantly reduced, ensuring the project meets the Total Image size below 600MB criteria.
+## 1. Choice of Kubernetes objects and reasoning
 
 
-## 2. Dockerfile Directives used
 
-(i) FROM: it tells Docker to start building this image using another existing image as the foundation.
-
-(ii) WORKDIR: Used to set the working directory within the container (/app), ensuring commands run in the correct context and simplifying file paths.
-
-(iii) COPY: Used to transfer necessary application files (e.g package.json, source code) from the build context into the image layer.
-
-(iv) RUN npm install: Used strategically to install dependencies. 
-
-(iv) EXPOSE: Declared the port on which the service listens (3000 for client, 5000 for backend), documenting the service's networking intentions.
-
-(v) CMD: Defines the command that executes when the container starts (e.g., npm start for both client and backend), ensuring the service begins automatically.
+## 2. Method used to expose pods to internet traffic
 
 
-## 3. Docker-compose Networking
 
-(i) Network Definition: A custom bridge network named app-net was defined at the root level of docker-compose.yaml.
-
-(ii)Service Attachment: All three services (brian-yolo-client, brian-yolo-backend and app-ip-mongo) were explicitly attached to the app-net.
-
-(iii)Internal Communication: The backend connects to the database using the service name (app-ip-mongo) as the hostname, which is provided by the custom Docker DNS:
-MONGODB_URI: mongodb://app-ip-mongo:27017/yolomy
-
-(iv)Application Port Allocation: The client container is the only service explicitly mapped to the host machine for external access, using the required port allocation: ports: ["3000:3000"].
+## 3. Persistent storage (design and implementation)
 
 
-## 4. Docker-compose Volume Definition and Usage
 
-(i) Volume Definition: A named volume, app-mongo-data, was defined under the volumes section of the docker-compose.yaml.
+## 4. Successful running and debugging measures applied
+### Deployment steps executed 
+1.gcloud container clusters create yolo-cluster --num-nodes=3
 
-(ii) Volume Mounting: app-mongo-data was mounted to the standard MongoDB data directory (/data/db) within the app-ip-mongo container:
+2.gcloud container clusters get-credentials yolo-cluster
 
-```bash
-   volumes:
-    type: volume
-    source: app-mongo-data
-    target: /data/db
-  ```
+3.kubectl apply -f frontend-deployment.yaml
+  kubectl apply -f frontend-deployment.yaml
+4.kubectl get pods --watch to monitor rollout
 
+### Commands used to validate and debug
+kubectl get pods -o wide — check pod nodes and status
 
- - This setup guarantees that any product data saved in MongoDB’s /data/db directory is securely retained on the Docker host system, ensuring data remains intact even after container shutdowns, deletions or restarts.
+kubectl get pvc / kubectl get pv — confirm PV and PVC binding
 
-## 5. Git Workflow Used
-- The project development followed an iterative, descriptive Git workflow, maximizing clarity and traceability:
+kubectl describe pod mongo-0 — inspect volume mounts and events
 
-- Key stages in the process included:
+kubectl logs <pod> — check application logs for errors
 
-(i) Initialization and Environment Setup:
-The workflow began by cloning the base repository, reviewing the existing structure and configuring the local development environment to ensure compatibility with Docker and Node.js components.
+kubectl exec -it <pod> -- /bin/sh — run internal diagnostics (curl backend, check files)
 
-(ii) Configuration and Integration:
-Subsequent commits focused on verifying and refining container configurations, including adjustments to Dockerfile and docker-compose.yaml parameters to ensure seamless communication between the frontend and backend services.
+### Real issues encountered and fixes
+1. Client build runtime error (ERR_OSSL_EVP_UNSUPPORTED)
 
-(iii) Debugging and Optimization:
-The most critical commits were focused on solving complex integration issues, with messages explicitly documenting the fix:
-- FIX: Applied NODE_OPTIONS for OpenSSL compatibility in client container.
+Cause: Node.js + OpenSSL v3 compatibility for some libraries used in the React toolchain.
 
-- FIX: Database persistence confirmed after volume cleanup ('docker-compose down -v').
+Fix: Added NODE_OPTIONS=--openssl-legacy-provider in the client image runtime environment (or build-time ENV) to restore compatibility.
 
-- FIX: Validated numeric price input to resolve Mongoose CastError.
+2. Mongoose CastError when saving non-numeric price
 
-(iv) Finalization and Documentation:
-The final commits consolidated all changes, verified container functionality and refined the project’s documentation and submission files. 
+Cause: Client-side validation missing; backend expected a Number type for price.
 
-- This structured workflow maintained an organized and transparent commit record, showcasing consistent use of Git best practices while allowing straightforward tracking and assessment of the project’s progress from initialization to final deployment.
+Fix: Enforced client-side numeric validation and added backend validation/error handling with descriptive messages.
 
-## 6. Successful running and debugging measures
+3. Volume/persistence validation
+
+Procedure: removed and re-created PVC/PV as part of testing to ensure new volumes were properly bound — used kubectl delete pvc only when reinitializing state intentionally.
+
+## 5. Good practises and image tagging standards
 
  (i) Intial BUild/runtime issues - confirmed node:18-slim usage, ensuring basic package compatibility  resulting to the images being built successfully.
 
