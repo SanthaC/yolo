@@ -165,7 +165,7 @@ As a project deliverable, the custom-built images for the client and backend ser
 The screenshot above confirms the successful push and the use of the required Semantic Versioning (v1.0.0) tag, satisfying the Image Deployment and Image Versioning criteria.
 ```bash
 docker build -t santhac/brian-yolo-client:v1.0.1 .
-docker build -t santhac/brian-yolo-backend:v1.0.1 .
+docker build -t santhac/brian-yolo-backend:v1.0.0 .
 
 docker push santhac/brian-yolo-client:v1.0.1
 docker push santhac/brain-yolo-backend:v1.0.0
