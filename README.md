@@ -172,18 +172,14 @@ docker push santhac/brian-yolo-client:v1.0.1
 docker push santhac/brain-yolo-backend:v1.0.0
 
 ```
-### Step 5.4: Deploy MongoDB Stateful
-```bash
 
-
-```
-### Step 5.5: Deploy Backend and Frontend(Client)
+### Step 5.4: Deploy Backend and Frontend(Client)
 ```bash
 kubectl apply -f frontend-deployment.yaml
 kubectl apply -f backend-deployment.yaml
 
 ```
-### Step 5.6: Verify Deployments
+### Step 5.5: Verify Deployments
 ```bash
 kubectl get pods
 kubectl get svc
