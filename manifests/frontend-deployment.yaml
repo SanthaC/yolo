@@ -13,23 +13,36 @@ spec:
         app: frontend
     spec:
       containers:
-        - name: client
-          image: santhac/brian-yolo-client:v1.0.0 
+        - name: frontend
+          # Use your specific image:
+          image: santhac/brian-yolo-client:v1.0.1
           ports:
-            - containerPort: 3000 # Container still runs internally on 3000
+            # The client container should listen on port 3000
+            - containerPort: 3000
           env:
-            - name: REACT_APP_BACKEND_URL 
+            # IMPORTANT: Use the internal ClusterIP service name for the backend.
+            # This allowsa the frontend pod to talk to the backend service.
+            - name: REACT_APP_BACKEND_URL
               value: http://brian-yolo-backend:5000
+          
+          # ===============================================================
+          # FIX: This explicit command overrides the default 'react-scripts start'
+          # and runs a production web server (assuming 'serve' is installed 
+          # in your image and the build output is in /usr/src/app/build).
+          # This should stop the CrashLoopBackOff.
+          # ===============================================================
+          command: ["npx"]
+          args: ["serve", "-s", "/app/build", "-l", "3000"]
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: brian-yolo-client 
+  name: brian-yolo-client
 spec:
+  type: LoadBalancer
   selector:
     app: frontend
   ports:
     - protocol: TCP
-      port: 3000
+      port: 80
       targetPort: 3000
-  type: LoadBalancer

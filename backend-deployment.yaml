@@ -1,11 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deployment
-  labels:
-    app: backend
+  name: brian-yolo-backend-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -16,29 +14,23 @@ spec:
     spec:
       containers:
         - name: backend
-          image: santhac//brian-yolo-backend:v1.0.0
-          command: ["npm", "start"] 
+          image: santhac/brian-yolo-backend:v1.0.0
           ports:
             - containerPort: 5000
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
+          env:
+            - name: MONGODB_URI
+              value: mongodb://app-ip-mongo:27017/yolomy
+          
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: brian-yolo-backend
 spec:
-  type: LoadBalancer
   selector:
     app: backend
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: 30100
-  
+  type: ClusterIP
