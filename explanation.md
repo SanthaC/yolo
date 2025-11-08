@@ -24,6 +24,7 @@ This document explains the design reasoning and implementation choices made when
 
 3.kubectl apply -f frontend-deployment.yaml
   kubectl apply -f frontend-deployment.yaml
+
 4.kubectl get pods --watch to monitor rollout
 
 ### Commands used to validate and debug
@@ -54,34 +55,25 @@ Fix: Enforced client-side numeric validation and added backend validation/error 
 
 Procedure: removed and re-created PVC/PV as part of testing to ensure new volumes were properly bound — used kubectl delete pvc only when reinitializing state intentionally.
 
-## 5. Good practises and image tagging standards
+## 5. Good Practises and image tagging standards
 
- (i) Intial BUild/runtime issues - confirmed node:18-slim usage, ensuring basic package compatibility  resulting to the images being built successfully.
+### Image tagging and versioning
+Follows Semantic Versioning: v1.0.0, v1.1.0, etc. Each deployment manifest references a fixed image tag (not latest) to ensure reproducibility.
 
- (ii) Client Crash - (ERR_OSSL_EVP_UNSUPPORTED) - Added NODE_OPTIONS: --openssl-legacy-provider to the client service environment in docker-compose.yaml resulting to the client container being started successfully.
+Why fixed tags?
 
- (iii) Persistence Failure (Validation) - Used docker logs brian-yolo-backend to diagnose Mongoose Cast to Number failed error and corrected the client-side input during the test phase resulting to the backend being successfully processing the saved operation.
+Prevents unexpected updates during kubectl rollout restart or recreations. Tags make rollbacks explicit and simple.
 
- (iv) Persistence Failure (Volume) -Used docker compose down -v to delete the old volume before restarting ensuring persistence was successful across shutdowns.
+### AdditionL best practices applied
 
-  - The final  application is successfully running, with all three microservices orchestrated via Docker Compose and maintaining persistent data.
+Resource requests & limits: small defaults were added to avoid noisy node scheduling and ensure predictable resource consumption.
 
-## 7. Good Practises and Versioning
+Health checks: readiness and liveness probes to remove unhealthy pods and avoid sending traffic to non-ready pods.
 
-(i) Versioning: Uses version: "3.8" for compatibility with modern Docker features and stable networking.
+ConfigMaps & Secrets: environment configuration (like MONGODB_URI) is stored in a ConfigMap and sensitive values in Secrets rather than hard-coding inside images.
 
-(ii) Service Separation: Frontend, backend, and database are defined as distinct services for modularity and easier management.
+Labels & annotations: used to identify app, component, environment which helps with management and monitoring.
 
-(iii) Clear Naming & Tagging: Uses descriptive service names and version-tagged images (e.g v1.0.0) for clarity and version control.
+ImagePullPolicy: set to IfNotPresent for stable tags and Always for frequently updated tags during CI-only tests.
 
-(iv) Custom Network: Implements a user-defined bridge network (app-net) for secure and isolated container communication.
-
-(v)Data Persistence: Uses a named volume (app-mongo-data) to retain MongoDB data across container restarts.
-
-(vi) Dependency Control: Applies depends_on to manage the correct startup order of services.
-
-Restart Policy: Uses restart: always to ensure the backend restarts automatically on failure.
-
-(vi) Environment Variables: Keeps configuration flexible and separate from code for easier management.
-
-(vii) Documentation: Includes clear comments that explain the purpose and function of each service, improving readability and maintenance.
+Logging: Application logs are written to stdout/stderr so they integrate with GKE logging stacks.
