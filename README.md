@@ -157,6 +157,7 @@ gcloud container clusters create yolo-cluster --num-nodes=3
 gcloud container clusters get-credentials yolo-cluster
 
 ```
+![Cluster](./client/src/images/screenshots/k-cluster.png)
 ### Step 5.3: Build and Push Docker Images
 As a project deliverable, the custom-built images for the client and backend services have been successfully pushed to the public DockerHub registry, ensuring they are versioned and universally available for deployment.
 
