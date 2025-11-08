@@ -2,12 +2,15 @@
 
 ## 1. Project Overview
 
-This project focused on containerizing a pre-existing application built with Node.js, React and MongoDB. The final outcome is a fully operational e-commerce platform that enables users to browse, add, and maintain product data, even after containers are stopped or restarted.
-The entire environment is launched via a single docker compose command, ensuring maximum portability and ease of deployment.
+This project focuses on containerizing and orchestrating a full-stack e-commerce application built using Node.js (Backend), React (Frontend) and MongoDB (Database).
+
+In this week’s Independent Project (Week 8 IP4 – Orchestration), the application is deployed on Google Kubernetes Engine (GKE) using multiple Kubernetes objects for high availability, persistence and scalability.
+
+Users can browse, add and manage product data seamlessly — with data persistence ensured even after Pod or Node restarts via PersistentVolumes and a StatefulSet for MongoDB.
 
 ## 2. Architecture and Microservices
 
-The application is broken down into three distinct microservices, all connected via a dedicated Docker bridge network (app-net):
+The system is divided into three microservices connected through a dedicated Kubernetes network and managed by a set of Kubernetes manifests.
 
 (i) brain-yolo-client - React, Node.js - Frontend Dashboard - Host Port 3000
 
@@ -109,19 +112,21 @@ YOLO/
 ```
 ---
 
-## 4. Requirement 
+## 4. Prerequisites 
 
-- To successfully build and run this application, you must have the following software installed on your host machine:
+Ensure the following tools are installed and configured:
 
-- Docker Engine: For building and running containers.
-```bash
-- Install Docker Engine
-```
-- Git: For cloning the repository.
+Docker Engine – for building images
 
-## 5. Deployment and Launch
+kubectl – for Kubernetes cluster management
 
-Follow these steps to clone the repository, build the images and launch the entire application stack:
+Google Cloud SDK (gcloud) – for GKE authentication and deployment
+
+Git – for version control
+
+DockerHub Account – to store tagged images
+## 5. Deployment on Google Kubernetes Engine(GKE)
+
 
 ### Step 5.1: Clone the Repository
 
@@ -132,78 +137,119 @@ Navigate to your preferred directory and clone the project:
  git clone https://github.com/SanthaC/yolo
 - cd yolo 
 ```
-### Step 5.2: Build and Run Containers (Using Docker Compose)
 
-The docker-compose.yaml file defines the build instructions, service dependencies, networking and volume setup.
-
-Execute the following command from the project root directory. The -d flag runs the containers in detached mode:
+### Step 5.2: Create GKE Cluster
+#### Step 5.2.1: Make sure you have:
 ```bash
-docker compose up --build -d
+sudo apt update
+sudo apt install -y kubectl google-cloud-sdk
+
 ```
-Allow 1-2 minutes for the initial images to build and the MongoDB service to initialize.
-
-### Step 5.3: Verify Container Status
-
-After running the command above, use docker ps to confirm that all three microservices are up and running:
+#### Step 5.2.2: Login to Google Cloud
 ```bash
-docker ps
+gcloud auth login
+gcloud config set project cryptic-ground-477217-i2
+
 ```
-You should see all three containers (client, backend and mongo) listed with a STATUS of Up.
+#### Step 5.2.3: Create a cluster
+```bash
+gcloud container clusters create yolo-cluster --num-nodes=3
+gcloud container clusters get-credentials yolo-cluster
 
-![Docker containers running](./client/src/images/screenshots/successful-container-running.png)
+```
+### Step 5.3: Build and Push Docker Images
+As a project deliverable, the custom-built images for the client and backend services have been successfully pushed to the public DockerHub registry, ensuring they are versioned and universally available for deployment.
+
+![Docker Hb repo](./client/src/images/screenshots/Docker-repo.png)
+
+The screenshot above confirms the successful push and the use of the required Semantic Versioning (v1.0.0) tag, satisfying the Image Deployment and Image Versioning criteria.
+```bash
+docker build -t santhac/brian-yolo-client:v1.0.1 .
+docker build -t santhac/brian-yolo-backend:v1.0.1 .
+
+docker push santhac/brian-yolo-client:v1.0.1
+docker push santhac/brain-yolo-backend:v1.0.0
+
+```
+### Step 5.4: Deploy MongoDB Stateful
+```bash
 
 
-### Step 5.4: Access the Application
+```
+### Step 5.5: Deploy Backend and Frontend(Client)
+```bash
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f backend-deployment.yaml
 
-Once the containers are running, the e-commerce dashboard will be available at:
+```
+### Step 5.6: Verify Deployments
+```bash
+kubectl get pods
+kubectl get svc
 
-http://localhost:3000
+```
+![Verfying Deployment](./client/src/images/screenshots/kubectl-pods/services.png)
+## 7. Accessing the Application
+Run
+```bash
+kubectl get svc
+
+```
+Then access the platform via:
+```bash
+http://10.102.182.148/
+
+```
 ![Web Application Screenshot](./client/src/images/screenshots/web-application.png)
 
+## 8. Testing Functionality and Persistence
 
-
-## 6. Functionality and Persistence Test (The Core Deliverable)
-
-The successful launch of the application confirms Service Orchestration. Use the following steps to confirm data persistence, a critical objective of this project:
-
-### Test 6.1: Add a Product
-Access the dashboard at http://localhost:3000.
-
+### Step 8.1: Add Product
 Use the "Add Product" form.
 
 Crucially, ensure the "Price" field contains a valid number (e.g. 10.50), as non-numeric input will fail backend validation.
 
 Add the product. It should immediately appear in the list.
 
-### Test 6.2: Confirm Persistence
-
-Stop the entire application stack (this simulates a system shutdown):
+### Step 8.2: Validate Persistence
+Delete the MongoDB pod:
 ```bash
-docker compose down
+kubectl delete pod <mongo-pod-name>
+
 ```
-
-This command shuts down the containers but preserves the persistent named volume, app-mongo-data.
-
-Restart the application:
-```bash
-docker compose up -d
-```
-
-![Terminal Image](./client/src/images/screenshots/terminal-image.png)
-
-Verify Data: Refresh the browser at http://localhost:3000. The product added in Step 5.1 must still be visible. If it is present, data persistence is confirmed via the custom Docker Volume setup.
+Kubernetes recreates the Pod automatically, but data remains intact (thanks to PersistentVolume + StatefulSet).
 ![Successful Product added](./client/src/images/screenshots/persistent-web-data.png)
 
-## 7. Docker Image Deployment Status
+## 9. Kubernetes Object Summary
+(i)Frontend(client) - Deployment + LoadBalanacer service - UI exposure and scaling
+(ii)Backend - Deployment + ClusterIP service - REST API login and internal networking
+(iii)Database - Stateful + PVC + PV - Persistent data Storage
+(iv)Namespace - Namespace Resource isolation
 
-As a final project deliverable, the custom-built images for the client and backend services have been successfully pushed to the public DockerHub registry, ensuring they are versioned and universally available for deployment.
+## 10. Semantic Versioning and DockerHub
+All images use semantic version tags (v1.0.0) for consistency and traceability.
+DockerHub repo:
+📦 https://hub.docker.com/repository/docker/santhac
 
-![Docker Hb repo](./client/src/images/screenshots/docker-repo.png)
+## 11. Troubleshooting and Debugging Measures
+Used kubectl logs to inspect backend and MongoDB errors.
 
-The screenshot above confirms the successful push and the use of the required Semantic Versioning (v1.0.0) tag, satisfying the Image Deployment and Image Versioning criteria.
+Validated service connectivity via kubectl exec -it and curl commands.
 
-## 7. Technical Deep Dive
+Adjusted MongoDB connection strings to use Kubernetes DNS names (mongo-service:27017).
 
-For an in-depth explanation of image choices, network setup using a custom bridge, persistent volume configuration and the troubleshooting process for resolving environment-related issues, please consult the project documentation:
+Ensured readiness/liveness probes for backend pods.
 
-explanation.md (located in the repository root).
+## 12. Reference
+Kubernetes Documentation – StatefulSets
+
+Google Kubernetes Engine (GKE)
+
+DockerHub Semantic Versioning
+
+✅ 13. Final Deliverables
+GitHub Repository: https://github.com/SanthaC/yolo
+
+Live Application: http://10.102.182.148/
+
+Explanation File: explanation.md (includes justification for object choices, exposure method and persistence strategy)
