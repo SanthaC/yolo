@@ -14,14 +14,12 @@ spec:
     spec:
       containers:
         - name: client
-          image: santhac/brian-yolo-client:v1.0.0
+          image: santhac/brian-yolo-client:v2.0.0 
           ports:
-            - containerPort: 3000
+            - containerPort: 3000 # Container still runs internally on 3000
           env:
-            - name: NODE_OPTIONS
-            # NOTE: If your frontend needs to know the backend URL, 
-            # you'll need an environment variable here pointing to the Service name.
-            # Example: REACT_APP_BACKEND_URL: http://brian-yolo-backend:5000
+            - name: REACT_APP_BACKEND_URL 
+              value: http://brian-yolo-backend:5000
 ---
 apiVersion: v1
 kind: Service
