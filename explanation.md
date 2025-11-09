@@ -9,7 +9,7 @@ This document explains the design reasoning and implementation choices made when
 ### Frontend — Deployment + Service (LoadBalancer)
 
 Why Deployment?
-The frontend is stateless and can be scaled horizontally. A Deployment offers declarative updates, self-healing, and rolling updates.
+The frontend is stateless and can be scaled horizontally. A Deployment offers declarative updates, self-healing and rolling updates.
 
 Using a Deployment allows easy scaling for traffic spikes and integrates well with HorizontalPodAutoscaler if needed.
 
@@ -19,25 +19,25 @@ Exposes the frontend to the internet via a cloud load balancer provided by GKE. 
 
 Optionally, an Ingress resource with a TLS certificate can be used to provide HTTPS and host-based routing if a domain is available.
 
-Key features used: readiness and liveness probes, resource requests/limits, imagePullPolicy, and proper labels for observability.
+Key features used: readiness and liveness probes, resource requests/limits, imagePullPolicy and proper labels for observability.
 
 ### Backend — Deployment + Service (ClusterIP)
 
 Why Deployment?
-The backend is also stateless and benefits from the same rolling updates, replica management, and self-healing provided by Deployment.
+The backend is also stateless and benefits from the same rolling updates, replica management and self-healing provided by Deployment.
 
 Service type: ClusterIP
 
-The backend service does not need a public IP; it is accessible internally by the frontend using Kubernetes DNS (e.g., backend-svc.default.svc.cluster.local:5000).
+The backend service does not need a public IP; it is accessible internally by the frontend using Kubernetes DNS.
 
 This protects the API from direct public exposure and centralizes ingress through the frontend or an API gateway.
 
-Key features used: environment configuration through ConfigMap/Secret, liveness/readiness probes, and labels for selectors.
+Key features used: environment configuration through ConfigMap/Secret, liveness/readiness probes and labels for selectors.
 
 ### MongoDB — StatefulSet + Headless Service + PersistentVolumeClaims
 Why StatefulSet?
 
-Stateful workloads require stable network identities and persistent storage. StatefulSet assigns deterministic pod names (e.g., mongo-0) and stable storage that follows the Pod across reschedules.
+Stateful workloads require stable network identities and persistent storage. StatefulSet assigns deterministic pod names (e.g.app-mongo-statefulset-0) and stable storage that follows the Pod across reschedules.
 
 This is ideal for databases where each replica needs a stable identity and persistent volume.
 
@@ -58,28 +58,33 @@ Why not Deployment for DB?
 A Deployment lacks stable identities and stable persistent volume binding per replica. If the database pod were re-created, a Deployment might attach a different volume or fail to preserve pod identity — undesirable for stateful databases.
 
 ## 2. Method used to expose pods to internet traffic
+
 ### Frontend exposure
 Primary method: Service type LoadBalancer on the frontend service.
 
-GKE provisions a cloud load balancer and assigns an external IP. The URL documented in the repository README is of the form http://<EXTERNAL-IP>:3000 or http://<EXTERNAL-IP> depending on the Service port mapping.
+GKE provisions a cloud load balancer and assigns an external IP. The URL documented in the repository README is of the form http://10.102.182.148/ depending on the Service port mapping.
 
 Alternate/Production-ready method: Use an Ingress resource backed by the GKE ingress controller (HTTP(S) Load Balancer). Benefits:
 
 TLS termination (HTTPS)
 
 Host/path-based routing (serve API and UI under a single domain)
+
 ### Backend exposure
 The backend is exposed internally via ClusterIP. The frontend communicates with the backend through that internal service name.
 
 If needed for external clients or CI tests, restrict exposure via an Ingress path.
 
 ## 3. Persistent storage (design and implementation)
+
 ### Requirements
 Data added via the application (e.g. products) must remain available after Pod restarts, node reboots or even Pod replacement.
+
 ### Implementation choices
 GKE-backed PersistentVolumes via the default StorageClass (which uses Google Compute Engine Persistent Disks on GKE).
 
 MongoDB runs in a StatefulSet with volumeClaimTemplates creating PVCs for each replica. Each PVC is bound to a PV with storage provided by GKE.
+
 ### Persistence verification procedure
 1. Add a product using the UI.
 
@@ -90,7 +95,9 @@ MongoDB runs in a StatefulSet with volumeClaimTemplates creating PVCs for each r
 4. Wait for the Pod to come back and then refresh the UI. The previously-added product should still be present.
 
 This demonstrates that the PVC/PV pair persist data independently of the Pod lifecycle.
+
 ## 4. Successful running and debugging measures applied
+
 ### Deployment steps executed 
 1.gcloud container clusters create yolo-cluster --num-nodes=3
 
@@ -102,17 +109,18 @@ This demonstrates that the PVC/PV pair persist data independently of the Pod lif
 4.kubectl get pods --watch to monitor rollout
 
 ### Commands used to validate and debug
-kubectl get pods -o wide — check pod nodes and status
+kubectl get pods  — check pod nodes and status
 
 kubectl get pvc / kubectl get pv — confirm PV and PVC binding
 
-kubectl describe pod mongo-0 — inspect volume mounts and events
+kubectl describe pod app-mongo-statefulset-0    — inspect volume mounts and events
 
 kubectl logs <pod> — check application logs for errors
 
 kubectl exec -it <pod> -- /bin/sh — run internal diagnostics (curl backend, check files)
 
 ### Real issues encountered and fixes
+
 1. Client build runtime error (ERR_OSSL_EVP_UNSUPPORTED)
 
 Cause: Node.js + OpenSSL v3 compatibility for some libraries used in the React toolchain.
