@@ -140,7 +140,7 @@ Procedure: removed and re-created PVC/PV as part of testing to ensure new volume
 ## 5. Good Practises and image tagging standards
 
 ### Image tagging and versioning
-Follows Semantic Versioning: v1.0.0, v1.1.0, etc. Each deployment manifest references a fixed image tag (not latest) to ensure reproducibility.
+Follows Semantic Versioning: v1.0.0, v1.0.1, etc. Each deployment manifest references a fixed image tag (not latest) to ensure reproducibility.
 
 Why fixed tags?
 
