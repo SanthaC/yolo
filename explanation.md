@@ -159,3 +159,17 @@ Labels & annotations: used to identify app, component, environment which helps w
 ImagePullPolicy: set to IfNotPresent for stable tags and Always for frequently updated tags during CI-only tests.
 
 Logging: Application logs are written to stdout/stderr so they integrate with GKE logging stacks.
+
+## 6. Git Workflow used
+
+In this project, I used a simple Git workflow based mainly on the master branch. All my work; including creating, editing and updating files was done directly on the master branch.
+
+After making changes, I followed these main steps:
+
+Add changes: git add . — to stage all modified files.
+
+Commit changes: git commit -m "Description of the update" — to save the changes with a message.
+
+Push changes: git push origin master — to upload the latest version of the project to GitHub.
+
+I didn’t create separate branches. This made the process straightforward and easy to manage.
