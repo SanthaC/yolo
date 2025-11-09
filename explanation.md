@@ -103,8 +103,8 @@ This demonstrates that the PVC/PV pair persist data independently of the Pod lif
 
 2.gcloud container clusters get-credentials yolo-cluster
 
-3.kubectl apply -f frontend-deployment.yaml
-  kubectl apply -f frontend-deployment.yaml
+3.kubectl apply -f frontend-deployment.yaml and
+  kubectl apply -f backend-deployment.yaml
 
 4.kubectl get pods --watch to monitor rollout
 
